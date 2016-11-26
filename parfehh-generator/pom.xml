@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.javacook</groupId>
+    <artifactId>parfehh-generator</artifactId>
+    <version>0.1-SNAPSHOT</version>
+
+    <scm>
+        <connection>scm:git:git://github.com/javacook/parfehh-generator.git</connection>
+        <developerConnection>scm:git:git@github.com:javacook/parfehh-generator.git</developerConnection>
+        <url>https://github.com/javacook/parfehh-generator</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <email>javacook@gmx.de</email>
+            <name>Jörg Vollmer</name>
+            <url>https://github.com/javacook</url>
+            <id>javacook</id>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+    <build>
+
+    <!-- ===================================================================== -->
+    <!-- ATTENTION:                                                            -->
+    <!-- Due to problems with the Maven4Eclipse plug-in we needed to add some  -->
+    <!-- configs especially for eclipse to make it work everywhere             -->
+    <!-- ===================================================================== -->
+
+
+        <!-- ======================================= -->
+        <!-- Plugin Management for Eclipse Lifecycle -->
+        <!-- ======================================= -->
+
+        <pluginManagement>
+
+            <plugins>
+
+                <!-- The following plugin configuration is needed to store -->
+                <!-- Eclipse Maven4Eclipse settings only.                  -->
+                <!-- It has no influence on the Maven build itself.        -->
+
+                <plugin>
+
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+
+                                <!-- Needed for lifecycle mapping: java goal (calling a java main class) -->
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>exec-maven-plugin</artifactId>
+                                        <versionRange>[1.0,)</versionRange>
+                                        <goals>
+                                            <goal>exec</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute>
+                                            <runOnIncremental>true</runOnIncremental>
+                                        </execute>
+                                    </action>
+                                </pluginExecution>
+
+                                <!-- Needed for lifecycle mapping: add-source goal (adding source trees to build class path) -->
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>build-helper-maven-plugin</artifactId>
+                                        <versionRange>[1.0,)</versionRange>
+                                        <goals>
+                                            <goal>add-source</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute>
+                                            <runOnIncremental>true</runOnIncremental>
+                                        </execute>
+                                    </action>
+                                </pluginExecution>
+
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+
+
+
+            </plugins>
+
+        </pluginManagement>
+
+        <!-- ============= -->
+        <!--    Plugins    -->
+        <!-- ============= -->
+
+        <plugins>
+
+            <!-- Add source directories: -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.9.1</version>
+                <executions>
+                    <execution>
+                        <id>add-source-directories</id>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                        <configuration>
+                            <sources>
+                                <source>src/gen-beans/java/</source>
+                                <source>src/gen/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Update beanbuild.cmd script and generate template beans: -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <executions>
+
+                    <!-- Update beanbuild.cmd script if version for jiowa-codegen changes within pom.xml -->
+                    <execution>
+                        <id>update-beanbuild-cmd-script</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-classpath</argument>
+                                <classpath>
+                                    <dependency>com.jiowa:jiowa-codegen</dependency>
+                                </classpath>
+                                <argument>com.jiowa.codegen.beangen.build.BeanbuildCmdScriptUpdater</argument>
+                                <argument>beanbuild.cmd</argument>               <!-- name of script to be updated -->
+                                <argument>jiowa.codegen.properties</argument>    <!-- property file to be used in the script -->
+                                <argument>check-template-syntax-only</argument>	 <!-- check only for syntax errors and do not generate the beans. They are generated by the maven build -->
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                    <!-- Generate template beans: -->
+                    <execution>
+                        <id>generate-template-beans</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-classpath</argument>
+                                <classpath>
+                                    <dependency>com.jiowa:jiowa-codegen</dependency>
+                                </classpath>
+                                <argument>com.jiowa.codegen.beangen.JiowaCodeGenTemplateBeanGenerator</argument>
+                                <argument>jiowa.codegen.properties</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+            <!-- Compiler -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.javacook.integra.generator.IntegraGeneratorMain</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <!-- ================= -->
+    <!-- JIOWA repository: -->
+    <!-- ================= -->
+
+    <repositories>
+        <repository>
+            <id>jiowa-maven-repository</id>
+            <url>http://www.jiowa.de/maven/repository/</url>
+        </repository>
+    </repositories>
+
+    <!-- ============ -->
+    <!-- Dependencies -->
+    <!-- ============ -->
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.javacook</groupId>
+            <artifactId>coordinate-sequencer</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.javacook</groupId>
+            <artifactId>easy-excel-access</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.javacook</groupId>
+            <artifactId>parfehh-domain</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+		
+        <dependency>
+            <groupId>com.javacook</groupId>
+            <artifactId>parfehh-util</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jiowa</groupId>
+            <artifactId>jiowa-codegen</artifactId>
+            <version>2.1.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>Artifactory</id>
+            <url>http://www.clean-coder.de:8080/artifactory/libs-release-local</url>
+        </repository>
+    </distributionManagement>
+
+</project>

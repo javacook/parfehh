@@ -1,0 +1,2 @@
+1) Neue Methdoe read, noch mal überarbeiten mit Integer und Double
+2) Problem mit der Intialisierung in der TestBridge im Konstruktor.

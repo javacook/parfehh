@@ -1,0 +1,54 @@
+package <<PackageName>>;
+
+import org.junit.*;
+// {{ProtectedRegionStart::imports_<<TestBridgeTitle>>}}
+// Put your specific imports here ...
+// {{ProtectedRegionEnd}}
+
+/**
+ * <<TestBridgeComment>>
+ */
+public class <<TestBridgeTitle>> <<TestBridgeExtends>> {
+
+    // {{ProtectedRegionStart::declarations_<<TestBridgeTitle>>}}
+    // Put your custom declaraions an methods here ...
+    // {{ProtectedRegionEnd}}
+
+    final <<TestSeriesTitle>> testSeries;
+
+    public <<TestBridgeTitle>>(<<TestSeriesTitle>> testSeries) {
+        this.testSeries = testSeries;
+        // {{ProtectedRegionStart::constructor_<<TestBridgeTitle>>}}
+        // Put further constructor code here ...
+        // {{ProtectedRegionEnd}}
+    }
+
+
+    // --------------------
+    // Preconditions:
+    // --------------------
+
+    << foreachPreCondition --> PreCondition.jgt />>
+
+
+    // --------------------
+    // Actions:
+    // --------------------
+
+    << foreachAction --> Action.jgt />>
+
+
+    // --------------------
+    // Effects:
+    // --------------------
+
+    << foreachEffect --> Effect.jgt />>
+
+
+    // --------------------
+    // Postconditions:
+    // --------------------
+
+    << foreachPostCondition --> PostCondition.jgt />>
+
+}

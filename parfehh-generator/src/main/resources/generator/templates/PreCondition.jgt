@@ -1,0 +1,10 @@
+/**
+ * <<PreConditionMethodComment>>
+ * <<PreConditionJavaDoc>>
+ */
+public void preCondition_<<PreConditionMethodName>>(<<PreConditionArgument>>) {
+    // {{ProtectedRegionStart::preCondition_<<PreConditionProtectedRegion>>}}
+    // Put your code here ...
+    // {{ProtectedRegionEnd}}
+}
+

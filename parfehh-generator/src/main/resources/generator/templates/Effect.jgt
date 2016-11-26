@@ -1,0 +1,10 @@
+/**
+ * <<EffectMethodComment>>
+ * <<EffectArgumentJavaDoc>>
+ */
+public void effect_<<EffectMethodName>>(<<EffectArgument>>) {
+    // {{ProtectedRegionStart::effect_<<EffectProtectedRegion>>}}
+    // Put your code here ...
+    // {{ProtectedRegionEnd}}
+}
+

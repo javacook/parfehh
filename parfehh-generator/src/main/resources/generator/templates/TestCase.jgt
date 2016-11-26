@@ -1,0 +1,28 @@
+/**
+ * <<TestCaseMethodComment>>
+ */
+@Test
+public void <<-TestCaseMethodName>>() {
+
+    <<TestBridgeTitle>> testBridge = new <<TestBridgeTitle>>(this);
+
+    // Preconditions:
+    << foreachPreCondition --> PreCondition_jit : {
+    testBridge.preCondition_<<PreConditionMethodName>>(<<PreConditionArgument>>); } >>
+
+    // Test steps:
+    << foreachTestStep --> TestStep_jit : {
+        // - <<TestStepDescription>>:
+        << foreachAction --> Action_jit : {
+            testBridge.action_<<ActionMethodName>>(<<ActionMethodArg>>);
+        } >>
+    } >>
+    // Effects:
+    << foreachEffect --> Effect_jit : {
+        testBridge.effect_<<EffectMethodName>>(<<EffectMethodArg>>);
+    } >>
+    // Postconditions:
+    << foreachPostCondition --> PostCondition_jit : {
+    testBridge.postCondition_<<PostConditionMethodName>>(<<PostConditionArgument>>); } >>
+}
+

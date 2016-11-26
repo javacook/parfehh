@@ -1,0 +1,23 @@
+package <<PackageName>>;
+
+import org.junit.*;
+// {{ProtectedRegionStart::imports_<<TestSeriesTitle>>}}
+// Put your specific imports here ...
+// {{ProtectedRegionEnd}}
+
+/**
+ * <<TestSeriesComment>>
+ */
+public class <<TestSeriesTitle>> <<TestSeriesExtends>> {
+
+    // {{ProtectedRegionStart::declarations_<<TestSeriesTitle>>}}
+    // Put your custom declaraions an methods here ...
+    // {{ProtectedRegionEnd}}
+
+    // --------------------
+    // Test cases:
+    // --------------------
+
+    << foreachTestCase -->  TestCase.jgt />>
+
+}

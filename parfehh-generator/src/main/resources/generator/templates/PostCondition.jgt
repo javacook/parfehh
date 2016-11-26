@@ -1,0 +1,10 @@
+/**
+ * <<PostConditionMethodComment>>
+ * <<PostConditionJavaDoc>>
+ */
+public void postCondition_<<PostConditionMethodName>>(<<PostConditionArgument>>) {
+    // {{ProtectedRegionStart::postCondition_<<PostConditionProtectedRegion>>}}
+    // Put your code here ...
+    // {{ProtectedRegionEnd}}
+}
+

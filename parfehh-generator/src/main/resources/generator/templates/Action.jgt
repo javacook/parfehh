@@ -1,0 +1,10 @@
+/**
+ * <<ActionMethodComment>>
+ * <<ActionArgumentJavaDoc>>
+ */
+public void action_<<ActionMethodName>>(<<ActionArgument>>) {
+    // {{ProtectedRegionStart::action_<<ActionProtectedRegion>>}}
+    // Put your code here ...
+    // {{ProtectedRegionEnd}}
+}
+
