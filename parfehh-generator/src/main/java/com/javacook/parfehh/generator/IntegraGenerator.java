@@ -1,6 +1,5 @@
 package com.javacook.parfehh.generator;
 
-import com.javacook.integrationtest.domain.*;
 import com.javacook.parfehh.util.util.ConsistencyCheck;
 import com.javacook.parfehh.util.util.Namer;
 import com.javacook.parfehh.domain.*;

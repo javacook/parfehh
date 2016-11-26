@@ -1,6 +1,5 @@
 package com.javacook.parfehh.generator;
 
-import com.javacook.integrationtest.domain.*;
 import com.javacook.easyexcelaccess.ExcelCoordinate;
 import com.javacook.easyexcelaccess.ExcelCoordinateAccessor;
 import com.javacook.easyexcelaccess.ExcelCoordinateSequencer;

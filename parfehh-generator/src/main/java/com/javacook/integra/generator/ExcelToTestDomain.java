@@ -1,9 +1,10 @@
 package com.javacook.integra.generator;
 
-import com.javacook.integrationtest.domain.*;
 import com.javacook.easyexcelaccess.ExcelCoordinate;
 import com.javacook.easyexcelaccess.ExcelCoordinateAccessor;
 import com.javacook.easyexcelaccess.ExcelCoordinateSequencer;
+import com.javacook.parfehh.domain.*;
+
 import java.util.logging.Logger;
 import java.io.IOException;
 

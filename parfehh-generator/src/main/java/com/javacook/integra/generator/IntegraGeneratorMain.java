@@ -1,8 +1,8 @@
 package com.javacook.integra.generator;
 
-import com.javacook.integrationtest.domain.TestSeries;
+import com.javacook.parfehh.domain.TestSeries;
 import com.javacook.easyexcelaccess.ExcelCoordinateAccessor;
-import com.javacook.integrationtest.util.JavaCookProperties;
+import com.javacook.parfehh.util.util.JavaCookProperties;
 import com.jiowa.codegen.JiowaCodeGeneratorEngine;
 
 import java.io.File;

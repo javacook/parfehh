@@ -1,10 +1,9 @@
 package com.javacook.integra.generator;
 
-import com.javacook.integrationtest.util.Namer;
 
-import static com.javacook.integrationtest.util.ConverterUtils.convertSpecialChars;
-import static com.javacook.integrationtest.util.ConverterUtils.cut;
-import static com.javacook.integrationtest.util.ConverterUtils.toJavaIdentifier;
+import static com.javacook.parfehh.util.util.ConverterUtils.*;
+import com.javacook.parfehh.util.util.Namer;
+
 
 /**
  * Created by vollmerj on 30.09.16.

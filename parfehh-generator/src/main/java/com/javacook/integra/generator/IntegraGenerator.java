@@ -1,9 +1,9 @@
 package com.javacook.integra.generator;
 
-import com.javacook.integrationtest.domain.*;
-import com.javacook.integrationtest.util.ConsistencyCheck;
-import com.javacook.integrationtest.util.Namer;
-import com.javacook.util.DynamicList;
+import com.javacook.parfehh.domain.*;
+import com.javacook.parfehh.domain.util.DynamicList;
+import com.javacook.parfehh.util.util.ConsistencyCheck;
+import com.javacook.parfehh.util.util.Namer;
 import com.jiowa.codegen.config.JiowaCodeGenConfig;
 import com.javacook.integra.template.bean.*;
 import com.javacook.integra.template.bean.TestCase_jgt.foreachEffect.Effect_jit;

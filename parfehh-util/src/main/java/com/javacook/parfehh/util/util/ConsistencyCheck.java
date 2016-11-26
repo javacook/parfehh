@@ -1,6 +1,5 @@
 package com.javacook.parfehh.util.util;
 
-import com.javacook.integrationtest.domain.*;
 import com.javacook.parfehh.domain.*;
 
 import java.util.Collection;
