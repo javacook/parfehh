@@ -12,11 +12,11 @@ Servers
 *.ear
 *.class
 *.iml
-*/out
+out
 temp/
-*/gen-beans/
-*/node_modules
-*/shell.lnk
-*/.hgignore
-*/.project
+gen-beans
+node_modules
+shell.lnk
+.hgignore
+.project
 *.zip
