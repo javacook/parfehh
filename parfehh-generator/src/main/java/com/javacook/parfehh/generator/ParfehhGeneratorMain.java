@@ -1,4 +1,4 @@
-package com.javacook.integra.generator;
+package com.javacook.parfehh.generator;
 
 import com.javacook.parfehh.domain.TestSeries;
 import com.javacook.easyexcelaccess.ExcelCoordinateAccessor;
@@ -17,9 +17,9 @@ import java.util.logging.LogManager;
 import java.util.stream.Collectors;
 
 
-public class IntegraGeneratorMain {
+public class ParfehhGeneratorMain {
 
-    public static final Logger log = Logger.getLogger("IntegraGeneratorMain");
+    public static final Logger log = Logger.getLogger("ParfehhGeneratorMain");
     public static final String PROPERTY_KEY_CONFIG_FILE_NAME  = "config";
     public static final String PROPERTY_KEY_LOGGING_FILE_NAME = "logging";
     public static final String PROPERTY_KEY_INPUT_FILE_NAME   = "excel.file";
@@ -161,10 +161,10 @@ public class IntegraGeneratorMain {
             log.info("... input file successfully loaded.");
         }
 
-        IntegraCodeGenConfig config = new IntegraCodeGenConfig(finalProperties);
+        ParfehhCodeGenConfig config = new ParfehhCodeGenConfig(finalProperties);
         TestSeries testSeries = new ExcelToTestDomain(excelAccessor).createTestSeries();
-        IntegraGenerator integraGenerator = new IntegraGenerator(testSeries, config);
-        JiowaCodeGeneratorEngine engine = new JiowaCodeGeneratorEngine(integraGenerator);
+        ParfehhGenerator parfehhGenerator = new ParfehhGenerator(testSeries, config);
+        JiowaCodeGeneratorEngine engine = new JiowaCodeGeneratorEngine(parfehhGenerator);
         engine.start();
         log.info("--- End of processing sheet no " + excelSheet);
     }

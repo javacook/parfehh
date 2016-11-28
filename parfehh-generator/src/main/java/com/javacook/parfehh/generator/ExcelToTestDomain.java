@@ -244,7 +244,7 @@ public class ExcelToTestDomain {
 
 
     private static void logCase(String method, ExcelCoordinate coord, String mess, Object nullOrNot) {
-        final Logger LOG = Logger.getLogger("IntegraGenerator." + method);
+        final Logger LOG = Logger.getLogger("ParfehhGenerator." + method);
         if (nullOrNot == null) {
             LOG.warning(coord + ": " + mess + " = " + nullOrNot);
         }
@@ -255,7 +255,7 @@ public class ExcelToTestDomain {
 
 
     private static void logFine(String method, ExcelCoordinate coord, String mess, Object nullOrNot) {
-        final Logger LOG = Logger.getLogger("IntegraGenerator." + method);
+        final Logger LOG = Logger.getLogger("ParfehhGenerator." + method);
         LOG.fine(coord + ": " + mess + " = " + nullOrNot);
     }
 

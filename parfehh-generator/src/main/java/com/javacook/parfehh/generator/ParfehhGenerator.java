@@ -1,9 +1,9 @@
-package com.javacook.integra.generator;
+package com.javacook.parfehh.generator;
 
-import com.javacook.parfehh.domain.*;
-import com.javacook.parfehh.domain.util.DynamicList;
 import com.javacook.parfehh.util.util.ConsistencyCheck;
 import com.javacook.parfehh.util.util.Namer;
+import com.javacook.parfehh.domain.*;
+import com.javacook.parfehh.domain.util.DynamicList;
 import com.jiowa.codegen.config.JiowaCodeGenConfig;
 import com.javacook.integra.template.bean.*;
 import com.javacook.integra.template.bean.TestCase_jgt.foreachEffect.Effect_jit;
@@ -13,7 +13,7 @@ import com.jiowa.codegen.generator.AbstractGenerator;
 
 import java.util.logging.Logger;
 
-public class IntegraGenerator extends AbstractGenerator {
+public class ParfehhGenerator extends AbstractGenerator {
 
     public static final String PACKAGE_NAME_PROPERTY_KEY = "jiowa.codegen.generator.output.package";
     public static final String TEST_SERIES_BASE_CLASS_PROPERTY_KEY = "jiowa.codegen.generator.baseclass.series";
@@ -28,7 +28,7 @@ public class IntegraGenerator extends AbstractGenerator {
      * Constructor:                                                           *
     \*------------------------------------------------------------------------*/
 
-    public IntegraGenerator(TestSeries testSeries, JiowaCodeGenConfig config) {
+    public ParfehhGenerator(TestSeries testSeries, JiowaCodeGenConfig config) {
         super(config);
         packageName = config.getProperty(PACKAGE_NAME_PROPERTY_KEY);
         testSeriesBaseClass = config.getProperty(TEST_SERIES_BASE_CLASS_PROPERTY_KEY, true);
@@ -50,26 +50,26 @@ public class IntegraGenerator extends AbstractGenerator {
 
     private static void assignUniqueNames(TestSeries testSeries) {
 
-        testSeries.uniqueName = new IntegraNamer().createUniqueName(testSeries.title);
+        testSeries.uniqueName = new ParfehhNamer().createUniqueName(testSeries.title);
         log("testSeries.uniqueName", testSeries.uniqueName);
 
-        final Namer preConditionNamer = new IntegraNamer();
+        final Namer preConditionNamer = new ParfehhNamer();
         for (PreCondition preCondition : testSeries.getAllPreConditions(true)) {
             if (preCondition == null) continue;
             preCondition.uniqueName = preConditionNamer.createUniqueName(preCondition.description);
             log("preCondition.uniqueName", preCondition.uniqueName);
         }
 
-        final Namer postConditionNamer = new IntegraNamer();
+        final Namer postConditionNamer = new ParfehhNamer();
         for (PostCondition postCondition : testSeries.getAllPostConditions(true)) {
             if (postCondition == null) continue;
             postCondition.uniqueName = postConditionNamer.createUniqueName(postCondition.description);
             log("postCondition.uniqueName", postCondition.uniqueName);
         }
 
-        final Namer testCaseNamer = new IntegraNamer();
-        final Namer actionNamer = new IntegraNamer();
-        final Namer effectNamer = new IntegraNamer();
+        final Namer testCaseNamer = new ParfehhNamer();
+        final Namer actionNamer = new ParfehhNamer();
+        final Namer effectNamer = new ParfehhNamer();
 
         for (TestCase testCase : testSeries.testCases) {
             if (testCase == null) continue;
@@ -92,7 +92,7 @@ public class IntegraGenerator extends AbstractGenerator {
     }
 
     private static void log(String mess, Object nullOrNot) {
-        final Logger LOG = Logger.getLogger("IntegraGenerator.assignUniqueNames");
+        final Logger LOG = Logger.getLogger("ParfehhGenerator.assignUniqueNames");
         if (nullOrNot == null) LOG.warning(mess + " = " + nullOrNot);
         else LOG.fine(mess + " = " + nullOrNot);
     }
