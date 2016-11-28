@@ -201,7 +201,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.javacook.integra.generator.IntegraGeneratorMain</mainClass>
+                            <mainClass>com.javacook.parfehh.generator.ParfehhGeneratorMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
