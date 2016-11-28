@@ -2,7 +2,6 @@ package com.javacook.parfehh.util.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 
 /**
  * Created by vollmer on 28.11.16.
@@ -32,7 +31,7 @@ public class LoadConfigUtil {
             final String configPropertiesFileName = getConfigFileName(argProperties);
 
             // Adds properties from the config file into the object "configProperties"
-            loadConfigProperties(configProperties, configPropertiesFileName);
+            addConfigPropertiesFromFile(configProperties, configPropertiesFileName);
 
             // Adds and overwrites the final properties with them of the argument list
             configProperties.addProperties(true, argProperties);
@@ -46,7 +45,8 @@ public class LoadConfigUtil {
     }// main
 
 
-    private static void loadConfigProperties(JavaCookProperties finalProperties, String configPropertiesFileName) throws IOException {
+    private static void addConfigPropertiesFromFile(
+            JavaCookProperties finalProperties, String configPropertiesFileName) throws IOException {
         // try to load config file at configPropertiesFileName
         final File configPropertiesFile = new File(configPropertiesFileName);
         if (configPropertiesFile.exists()) {
@@ -63,9 +63,8 @@ public class LoadConfigUtil {
             }
             catch (IllegalArgumentException e) {
                 System.out.println("... there is no resource: '" + configPropertiesFileName + "'");
-                throw new IllegalArgumentException(
-                        "Please specify the config file using '" + DEFAULT_CONFIG_FILE_NAME +
-                                "=...' as command line argument or define it in the config properties.");
+                throw new IllegalArgumentException("Please specify the config file using '" +
+                        PROPERTY_KEY_CONFIG_FILE_NAME + "=...' as command line argument.");
             }
         }
     }
