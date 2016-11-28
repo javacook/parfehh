@@ -47,6 +47,17 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>jiowa-maven-repository</id>
+            <url>http://www.jiowa.de/maven/repository/</url>
+        </repository>
+        <repository>
+            <id>javacook-maven-repository</id>
+            <url>http://www.clean-coder.de:8080/artifactory/javacook/</url>
+        </repository>
+    </repositories>
+
     <distributionManagement>
         <repository>
             <id>Artifactory</id>

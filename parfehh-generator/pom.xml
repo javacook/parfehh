@@ -220,18 +220,6 @@
         </plugins>
     </build>
 
-
-    <!-- ================= -->
-    <!-- JIOWA repository: -->
-    <!-- ================= -->
-
-    <repositories>
-        <repository>
-            <id>jiowa-maven-repository</id>
-            <url>http://www.jiowa.de/maven/repository/</url>
-        </repository>
-    </repositories>
-
     <!-- ============ -->
     <!-- Dependencies -->
     <!-- ============ -->
