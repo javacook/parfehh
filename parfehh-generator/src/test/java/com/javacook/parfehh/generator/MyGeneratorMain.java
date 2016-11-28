@@ -12,7 +12,7 @@ public class MyGeneratorMain {
     \*------------------------------------------------------------------------*/
 
     public static void main(String[] arguments) throws IOException {
-        IntegraGeneratorMain.main(arguments);
+        ParfehhGeneratorMain.main(arguments);
     }
 
 }
