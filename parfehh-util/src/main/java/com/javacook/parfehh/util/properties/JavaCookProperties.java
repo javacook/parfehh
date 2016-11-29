@@ -1,4 +1,4 @@
-package com.javacook.parfehh.util.util;
+package com.javacook.parfehh.util.properties;
 
 import java.io.*;
 import java.util.Properties;

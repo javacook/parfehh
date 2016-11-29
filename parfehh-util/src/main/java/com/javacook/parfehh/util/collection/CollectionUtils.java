@@ -1,4 +1,4 @@
-package com.javacook.parfehh.util.util;
+package com.javacook.parfehh.util.collection;
 
 import java.util.Collection;
 import java.util.HashSet;

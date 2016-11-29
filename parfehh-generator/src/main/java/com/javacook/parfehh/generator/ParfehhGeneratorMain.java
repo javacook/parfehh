@@ -2,8 +2,8 @@ package com.javacook.parfehh.generator;
 
 import com.javacook.parfehh.domain.TestSeries;
 import com.javacook.easyexcelaccess.ExcelCoordinateAccessor;
-import com.javacook.parfehh.util.util.JavaCookProperties;
-import com.javacook.parfehh.util.util.LoadConfigUtil;
+import com.javacook.parfehh.util.properties.JavaCookProperties;
+import com.javacook.parfehh.util.properties.LoadConfigUtil;
 import com.jiowa.codegen.JiowaCodeGeneratorEngine;
 
 import java.io.File;
@@ -37,7 +37,7 @@ public class ParfehhGeneratorMain {
             configureLogging(configProperties);
             generate(configProperties);
         }
-        catch (IllegalArgumentException e) {
+        catch (IllegalArgumentException | IOException e) {
             log.warning(e.getMessage());
         }
         catch (Exception e) {

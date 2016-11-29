@@ -1,4 +1,6 @@
-package com.javacook.parfehh.util.util;
+package com.javacook.parfehh.util.string;
+
+import com.javacook.parfehh.util.converter.DefaultConverter;
 
 import java.util.HashSet;
 import java.util.Set;

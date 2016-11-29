@@ -1,6 +1,7 @@
 package com.javacook.parfehh.util.util;
 
 import com.javacook.parfehh.domain.*;
+import com.javacook.parfehh.util.string.StringUtils;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 

@@ -1,10 +1,10 @@
 package com.javacook.parfehh.generator;
 
-import com.javacook.parfehh.util.util.Namer;
+import com.javacook.parfehh.util.string.Namer;
 
-import static com.javacook.parfehh.util.util.ConverterUtils.convertSpecialChars;
-import static com.javacook.parfehh.util.util.ConverterUtils.cut;
-import static com.javacook.parfehh.util.util.ConverterUtils.toJavaIdentifier;
+import static com.javacook.parfehh.util.converter.ConverterUtils.convertSpecialChars;
+import static com.javacook.parfehh.util.converter.ConverterUtils.cut;
+import static com.javacook.parfehh.util.converter.ConverterUtils.toJavaIdentifier;
 
 /**
  * Created by vollmerj on 30.09.16.

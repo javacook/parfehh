@@ -1,4 +1,4 @@
-package com.javacook.parfehh.util.util;
+package com.javacook.parfehh.util.properties;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,35 +14,29 @@ public class LoadConfigUtil {
 
     /**
      * @param commandLineArguments
-     * @throws IOException
+     * @throws IOException if a config file could not be read
      */
-    public static JavaCookProperties process(String[] commandLineArguments) throws Exception {
-        try {
-            JavaCookProperties argProperties   = new JavaCookProperties();
-            JavaCookProperties configProperties = new JavaCookProperties();
+     public static JavaCookProperties process(String[] commandLineArguments) throws IOException {
+        JavaCookProperties argProperties   = new JavaCookProperties();
+        JavaCookProperties configProperties = new JavaCookProperties();
 
-            // Loading basic config properties from resource jiowa.codegen.properties
-            configProperties.loadFromResource(false, BASE_CONFIG_RESOURCE_NAME);
+        // Loading basic config properties from resource jiowa.codegen.properties
+        configProperties.loadFromResource(false, BASE_CONFIG_RESOURCE_NAME);
 
-            // Loading (and perhaps overwriting) properties from the argument list "arguments"
-            argProperties.loadFromKeyValuePairs(true, commandLineArguments);
+        // Loading (and perhaps overwriting) properties from the argument list "arguments"
+        argProperties.loadFromKeyValuePairs(true, commandLineArguments);
 
-            // Check whether there is an property "config=..." in the argument list
-            final String configPropertiesFileName = getConfigFileName(argProperties);
+        // Check whether there is an property "config=..." in the argument list
+        final String configPropertiesFileName = getConfigFileName(argProperties);
 
-            // Adds properties from the config file into the object "configProperties"
-            addConfigPropertiesFromFile(configProperties, configPropertiesFileName);
+        // Adds properties from the config file into the object "configProperties"
+        addConfigPropertiesFromFile(configProperties, configPropertiesFileName);
 
-            // Adds and overwrites the final properties with them of the argument list
-            configProperties.addProperties(true, argProperties);
+        // Adds and overwrites the final properties with them of the argument list
+        configProperties.addProperties(true, argProperties);
 
-            return configProperties;
-        }
-        catch (IllegalArgumentException | IOException e) {
-            System.out.println(e.getMessage());
-            throw new Exception(e);
-        }
-    }// main
+        return configProperties;
+    }// process
 
 
     private static void addConfigPropertiesFromFile(

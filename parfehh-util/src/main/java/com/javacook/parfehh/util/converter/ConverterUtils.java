@@ -1,4 +1,4 @@
-package com.javacook.parfehh.util.util;
+package com.javacook.parfehh.util.converter;
 
 /**
  * Created by vollmer on 22.09.16.

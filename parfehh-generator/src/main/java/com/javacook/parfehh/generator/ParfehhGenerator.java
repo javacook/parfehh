@@ -1,7 +1,7 @@
 package com.javacook.parfehh.generator;
 
 import com.javacook.parfehh.util.util.ConsistencyCheck;
-import com.javacook.parfehh.util.util.Namer;
+import com.javacook.parfehh.util.string.Namer;
 import com.javacook.parfehh.domain.*;
 import com.javacook.parfehh.domain.util.DynamicList;
 import com.jiowa.codegen.config.JiowaCodeGenConfig;

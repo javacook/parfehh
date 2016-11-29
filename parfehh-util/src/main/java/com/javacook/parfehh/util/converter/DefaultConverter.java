@@ -1,4 +1,6 @@
-package com.javacook.parfehh.util.util;
+package com.javacook.parfehh.util.converter;
+
+import com.javacook.parfehh.util.string.Namer;
 
 /**
  * Created by vollmerj on 30.09.16.
