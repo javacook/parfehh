@@ -1,6 +1,7 @@
-package com.javacook.parfehh.util.util;
+package com.javacook.parfehh.generator;
 
 import com.javacook.parfehh.domain.*;
+import com.javacook.parfehh.util.string.StringUtils;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
@@ -9,7 +10,7 @@ import java.io.PrintStream;
 import java.util.Arrays;
 
 /**
- * Created by vollmer on 21.11.16.
+ * Created by vollmer on 29.11.16.
  */
 public class ConsistencyCheckTest {
 
@@ -58,7 +59,7 @@ public class ConsistencyCheckTest {
     //
     // Pre Condition
     //
-    
+
     @Test
     public void checkTestCasePreConditionSameDescriptionTwice() throws Exception {
         final TestCase testCase = new TestCase();

@@ -1,4 +1,4 @@
-package com.javacook.parfehh.util.util;
+package com.javacook.parfehh.util.string;
 
 /**
  * Created by vollmer on 12.09.16.

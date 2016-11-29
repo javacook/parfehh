@@ -1,6 +1,7 @@
-package com.javacook.parfehh.util.util;
+package com.javacook.parfehh.generator;
 
 import com.javacook.parfehh.domain.*;
+import com.javacook.parfehh.util.collection.CollectionUtils;
 
 import java.util.Collection;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package com.javacook.parfehh.util.util;
+package com.javacook.parfehh.util.string;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

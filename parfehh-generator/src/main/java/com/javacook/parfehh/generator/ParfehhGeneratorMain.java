@@ -2,7 +2,8 @@ package com.javacook.parfehh.generator;
 
 import com.javacook.parfehh.domain.TestSeries;
 import com.javacook.easyexcelaccess.ExcelCoordinateAccessor;
-import com.javacook.parfehh.util.util.JavaCookProperties;
+import com.javacook.parfehh.util.properties.JavaCookProperties;
+import com.javacook.parfehh.util.properties.LoadConfigUtil;
 import com.jiowa.codegen.JiowaCodeGeneratorEngine;
 
 import java.io.File;
@@ -19,14 +20,11 @@ import java.util.stream.Collectors;
 
 public class ParfehhGeneratorMain {
 
-    public static final Logger log = Logger.getLogger("ParfehhGeneratorMain");
-    public static final String PROPERTY_KEY_CONFIG_FILE_NAME  = "config";
+    public static final Logger log = Logger.getLogger(ParfehhGeneratorMain.class.getSimpleName());
     public static final String PROPERTY_KEY_LOGGING_FILE_NAME = "logging";
     public static final String PROPERTY_KEY_INPUT_FILE_NAME   = "excel.file";
     public static final String PROPERTY_KEY_INPUT_FILE_SHEETS = "excel.sheets";
-    public static final String DEFAULT_CONFIG_FILE_NAME       = "config.properties";
     public static final String DEFAULT_LOGGING_FILE_NAME      = "logging.properties";
-    public static final String BASE_CONFIG_RESOURCE_NAME      = "jiowa.codegen.properties";
 
     /**
      *
@@ -35,29 +33,11 @@ public class ParfehhGeneratorMain {
      */
     public static void main(String[] arguments) throws IOException {
         try {
-            JavaCookProperties argProperties   = new JavaCookProperties();
-            JavaCookProperties configProperties = new JavaCookProperties();
-
-            // Loading basic config properties from resource jiowa.codegen.properties
-            configProperties.loadFromResource(false, BASE_CONFIG_RESOURCE_NAME);
-
-            // Loading (and perhaps overwriting) properties from the argument list "arguments"
-            argProperties.loadFromKeyValuePairs(true, arguments);
-
-            // Check whether there is an property "config=..." in the argument list
-            final String configPropertiesFileName = getConfigFileName(argProperties);
-
-            // Adds properties from the config file into the object "configProperties"
-            loadConfigProperties(configProperties, configPropertiesFileName);
-
-            // Adds and overwrites the final properties with them of the argument list
-            configProperties.addProperties(true, argProperties);
-
+            JavaCookProperties configProperties = LoadConfigUtil.process(arguments);
             configureLogging(configProperties);
-
             generate(configProperties);
         }
-        catch (IllegalArgumentException e) {
+        catch (IllegalArgumentException | IOException e) {
             log.warning(e.getMessage());
         }
         catch (Exception e) {
@@ -65,31 +45,6 @@ public class ParfehhGeneratorMain {
         }
     }// main
 
-
-
-    private static void loadConfigProperties(JavaCookProperties finalProperties, String configPropertiesFileName) throws IOException {
-        // try to load config file at configPropertiesFileName
-        final File configPropertiesFile = new File(configPropertiesFileName);
-        if (configPropertiesFile.exists()) {
-            System.out.println("Loading config properties from file: " + configPropertiesFile.getAbsolutePath());
-            finalProperties.loadFromFile(true, configPropertiesFile);
-            System.out.println("... config properties successfully read.");
-        }
-        else {
-            System.out.println("A config properties file could not be found at '" + configPropertiesFile.getAbsolutePath() +"'");
-            System.out.println("Loading config properties as resource: '" + configPropertiesFileName + "' ...");
-            try {
-                finalProperties.loadFromResource(true, configPropertiesFileName);
-                System.out.println("... config properties successfully read.");
-            }
-            catch (IllegalArgumentException e) {
-                System.out.println("... there is no resource: '" + configPropertiesFileName + "'");
-                throw new IllegalArgumentException(
-                        "Please specify the config file using '" + DEFAULT_CONFIG_FILE_NAME +
-                                "=...' as command line argument or define it in the config properties.");
-            }
-        }
-    }
 
     private static void configureLogging(JavaCookProperties finalProperties) throws IOException {
         System.out.println("--- Configuring logging");
@@ -190,10 +145,6 @@ public class ParfehhGeneratorMain {
 
     private static String getSheetNumbers(JavaCookProperties properties) {
         return properties.getProperty(PROPERTY_KEY_INPUT_FILE_SHEETS, "0");
-    }
-
-    private static String getConfigFileName(JavaCookProperties properties) {
-        return properties.getProperty(PROPERTY_KEY_CONFIG_FILE_NAME, DEFAULT_CONFIG_FILE_NAME);
     }
 
     /*---------------------------------------------------------*\
