@@ -3,6 +3,7 @@ target
 Servers
 .idea
 .settings
+.project
 .DS_Store
 **/.classpath
 .metadata
