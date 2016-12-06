@@ -2,6 +2,7 @@ package com.javacook.parfehh.generator;
 
 import com.javacook.parfehh.domain.TestSeries;
 import com.javacook.easyexcelaccess.ExcelCoordinateAccessor;
+import com.javacook.parfehh.util.logging.LoggingUtils;
 import com.javacook.parfehh.util.properties.JavaCookProperties;
 import com.javacook.parfehh.util.properties.LoadConfigUtil;
 import com.jiowa.codegen.JiowaCodeGeneratorEngine;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class ParfehhGeneratorMain {
 
-    public static final Logger log = Logger.getLogger(ParfehhGeneratorMain.class.getSimpleName());
+    public static final Logger LOG = Logger.getLogger(ParfehhGeneratorMain.class.getSimpleName());
     public static final String PROPERTY_KEY_LOGGING_FILE_NAME = "logging";
     public static final String PROPERTY_KEY_INPUT_FILE_NAME   = "excel.file";
     public static final String PROPERTY_KEY_INPUT_FILE_SHEETS = "excel.sheets";
@@ -34,45 +35,16 @@ public class ParfehhGeneratorMain {
     public static void main(String[] arguments) throws IOException {
         try {
             JavaCookProperties configProperties = LoadConfigUtil.process(arguments);
-            configureLogging(configProperties);
+            LoggingUtils.configureLogging(configProperties);
             generate(configProperties);
         }
         catch (IllegalArgumentException | IOException e) {
-            log.warning(e.getMessage());
+            LOG.warning(e.getMessage());
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }// main
-
-
-    private static void configureLogging(JavaCookProperties finalProperties) throws IOException {
-        System.out.println("--- Configuring logging");
-        final String loggingPropertiesFileName = getLoggingFileName(finalProperties);
-
-        // Reading logging properties...
-        //
-        final File loggingPropertiesFile = new File(loggingPropertiesFileName);
-        if (loggingPropertiesFile.exists()) {
-            System.out.println("Loading logging properties from file: " + loggingPropertiesFile.getAbsolutePath());
-            InputStream is = new FileInputStream(loggingPropertiesFile);
-            LogManager.getLogManager().readConfiguration(is);
-            System.out.println("... logging properties successfully read.");
-        }
-        else {
-            System.out.println("A logging properties file could not be found at '" + loggingPropertiesFile.getAbsolutePath() +"'");
-            System.out.println("Loading logging properties as resource: '" + loggingPropertiesFileName + "' ...");
-            final InputStream is = ClassLoader.getSystemResourceAsStream(loggingPropertiesFileName);
-            if (is == null) {
-                System.out.println("... there is no resource: '" + loggingPropertiesFileName + "'; using defaults.");
-            }
-            else {
-                LogManager.getLogManager().readConfiguration(is);
-                System.out.println("... logging properties successfully read.");
-            }
-        }
-        System.out.println("--- End of configuring logging");
-    }
 
 
     /**
@@ -81,7 +53,7 @@ public class ParfehhGeneratorMain {
      * @throws IOException if there are problems reading the excel file
      */
     private static void generate(JavaCookProperties finalProperties) throws IOException {
-        log.info("======================== Start of INtegraion TEst GeneRAtion ============================");
+        LOG.info("======================== Start of INtegraion TEst GeneRAtion ============================");
         final String excelFileName = getExcelFileName(finalProperties);
         final String excelSheets = getSheetNumbers(finalProperties);
 
@@ -89,7 +61,7 @@ public class ParfehhGeneratorMain {
         for (int excelSheet : parseIntList(excelSheets)) {
             generateForOneSheet(finalProperties, excelFileName, excelSheet);
         } // for
-        log.info("======================== End of INtegraion TEst GeneRAtion ===============================");
+        LOG.info("======================== End of INtegraion TEst GeneRAtion ===============================");
     }
 
     /**
@@ -102,18 +74,18 @@ public class ParfehhGeneratorMain {
     private static void generateForOneSheet(JavaCookProperties finalProperties,
                                             String excelFileName,
                                             int excelSheet) throws IOException {
-        log.info("--- Processing sheet no " + excelSheet);
+        LOG.info("--- Processing sheet no " + excelSheet);
         final ExcelCoordinateAccessor excelAccessor;
         final File inputFile = new File(excelFileName);
         if (inputFile.exists()) {
-            log.info("Loading input file from: " + inputFile.getAbsolutePath());
+            LOG.info("Loading input file from: " + inputFile.getAbsolutePath());
             excelAccessor = new ExcelCoordinateAccessor(inputFile, excelSheet);
         }
         else {
-            log.info("The input file does not exist at: " + inputFile.getAbsolutePath());
-            log.info("Try to load '" + excelFileName + "' as resource ...");
+            LOG.info("The input file does not exist at: " + inputFile.getAbsolutePath());
+            LOG.info("Try to load '" + excelFileName + "' as resource ...");
             excelAccessor = new ExcelCoordinateAccessor(excelFileName, excelSheet);
-            log.info("... input file successfully loaded.");
+            LOG.info("... input file successfully loaded.");
         }
 
         ParfehhCodeGenConfig config = new ParfehhCodeGenConfig(finalProperties);
@@ -121,17 +93,13 @@ public class ParfehhGeneratorMain {
         ParfehhGenerator parfehhGenerator = new ParfehhGenerator(testSeries, config);
         JiowaCodeGeneratorEngine engine = new JiowaCodeGeneratorEngine(parfehhGenerator);
         engine.start();
-        log.info("--- End of processing sheet no " + excelSheet);
+        LOG.info("--- End of processing sheet no " + excelSheet);
     }
 
 
     /*---------------------------------------------------------*\
      * Reading data from the properties                        *
     \*---------------------------------------------------------*/
-
-    private static String getLoggingFileName(JavaCookProperties properties) {
-        return properties.getProperty(PROPERTY_KEY_LOGGING_FILE_NAME, DEFAULT_LOGGING_FILE_NAME);
-    }
 
     private static String getExcelFileName(JavaCookProperties properties) {
         final String inputFileName = properties.getProperty(PROPERTY_KEY_INPUT_FILE_NAME);
