@@ -16,6 +16,9 @@ public class LoggingUtils {
     public static final String PROPERTY_KEY_LOGGING_FILE_NAME = "logging";
     public static final String DEFAULT_LOGGING_FILE_NAME      = "logging.properties";
 
+    private LoggingUtils() {
+    }
+
     public static void configureLogging(JavaCookProperties finalProperties) throws IOException {
         System.out.println("--- Configuring logging");
         final String loggingPropertiesFileName = getLoggingFileName(finalProperties);
