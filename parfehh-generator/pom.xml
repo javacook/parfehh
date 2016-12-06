@@ -263,11 +263,4 @@
 
     </dependencies>
 
-    <distributionManagement>
-        <repository>
-            <id>Artifactory</id>
-            <url>http://www.clean-coder.de:8080/artifactory/libs-release-local</url>
-        </repository>
-    </distributionManagement>
-
 </project>
