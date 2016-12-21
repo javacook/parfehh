@@ -1,31 +1,25 @@
 package com.javacook.parfehh.generator;
 
-import com.javacook.parfehh.domain.TestSeries;
 import com.javacook.easyexcelaccess.ExcelCoordinateAccessor;
+import com.javacook.parfehh.domain.TestSeries;
 import com.javacook.parfehh.util.logging.LoggingUtils;
 import com.javacook.parfehh.util.properties.JavaCookProperties;
 import com.javacook.parfehh.util.properties.LoadConfigUtil;
 import com.jiowa.codegen.JiowaCodeGeneratorEngine;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
-
-import java.io.IOException;
-import java.util.logging.LogManager;
 import java.util.stream.Collectors;
 
 
 public class ParfehhGeneratorMain {
 
     public static final Logger LOG = Logger.getLogger(ParfehhGeneratorMain.class.getSimpleName());
-    public static final String PROPERTY_KEY_LOGGING_FILE_NAME = "logging";
     public static final String PROPERTY_KEY_INPUT_FILE_NAME   = "excel.file";
     public static final String PROPERTY_KEY_INPUT_FILE_SHEETS = "excel.sheets";
-    public static final String DEFAULT_LOGGING_FILE_NAME      = "logging.properties";
 
     /**
      *
@@ -68,7 +62,7 @@ public class ParfehhGeneratorMain {
      * Generation for a single Excel sheet
      * @param finalProperties the accumulated properties
      * @param excelFileName file or resource name (resource name not starting with /)
-     * @param excelSheet sheet no starting with 1
+     * @param excelSheet sheet no starting with 0
      * @throws IOException
      */
     private static void generateForOneSheet(JavaCookProperties finalProperties,
