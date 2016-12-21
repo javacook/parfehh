@@ -14,7 +14,7 @@ import java.io.IOException;
  * This is a class that must be indiviually written for your custom
  * Excel format.
  */
-public class ExcelToTestDomain {
+public class ExcelToTestDomain implements TestCaseReader {
 
     final static Logger LOG = Logger.getLogger("ExcelToTestDomain");
     final ExcelCoordinateAccessor excel;

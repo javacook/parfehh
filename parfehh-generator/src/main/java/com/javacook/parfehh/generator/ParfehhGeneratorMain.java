@@ -20,6 +20,7 @@ public class ParfehhGeneratorMain {
     public static final Logger LOG = Logger.getLogger(ParfehhGeneratorMain.class.getSimpleName());
     public static final String PROPERTY_KEY_INPUT_FILE_NAME   = "excel.file";
     public static final String PROPERTY_KEY_INPUT_FILE_SHEETS = "excel.sheets";
+    public static final String PROPERTY_KEY_TEST_CASE_READER  = "testCaseReader";
 
     /**
      *
@@ -83,11 +84,35 @@ public class ParfehhGeneratorMain {
         }
 
         ParfehhCodeGenConfig config = new ParfehhCodeGenConfig(finalProperties);
-        TestSeries testSeries = new ExcelToTestDomain(excelAccessor).createTestSeries();
-        ParfehhGenerator parfehhGenerator = new ParfehhGenerator(testSeries, config);
-        JiowaCodeGeneratorEngine engine = new JiowaCodeGeneratorEngine(parfehhGenerator);
-        engine.start();
+
+        final TestCaseReader testCaseReader = createTestCaseReader(excelAccessor, config);
+        if (testCaseReader != null) {
+            final TestSeries testSeries = testCaseReader.createTestSeries();
+            ParfehhGenerator parfehhGenerator = new ParfehhGenerator(testSeries, config);
+            JiowaCodeGeneratorEngine engine = new JiowaCodeGeneratorEngine(parfehhGenerator);
+            engine.start();
+        }
         LOG.info("--- End of processing sheet no " + excelSheet);
+    }
+
+    private static TestCaseReader createTestCaseReader(ExcelCoordinateAccessor excelAccessor, ParfehhCodeGenConfig config) {
+        final TestCaseReader testCaseReader;
+        final String testCaseReaderClassName = config.getProperty(PROPERTY_KEY_TEST_CASE_READER, true);
+        if (testCaseReaderClassName == null) {
+            LOG.info("No custom test case reader specified, using default reader...");
+            testCaseReader = new ExcelToTestDomain(excelAccessor);
+        }
+        else {
+            LOG.info("Using custom test case reader '" + testCaseReaderClassName + "'...");
+            try {
+                final Class<TestCaseReader> aClass = (Class<TestCaseReader>) Class.forName(testCaseReaderClassName);
+                testCaseReader = aClass.getConstructor(ExcelCoordinateAccessor.class).newInstance(excelAccessor);
+            } catch (ReflectiveOperationException e) {
+                LOG.severe("Problems when creating class '" + testCaseReaderClassName + "'" + e);
+                return null;
+            }
+        }
+        return testCaseReader;
     }
 
 
