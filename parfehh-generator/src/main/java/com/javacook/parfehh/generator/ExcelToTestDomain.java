@@ -10,7 +10,7 @@ import java.io.IOException;
 
 /**
  * Reads the test cases (data) from an Excel file and stores them into
- * the domain model (look also at the project integrationtest-domain).
+ * the domain testdatamodel (look also at the project integrationtest-domain).
  * This is a class that must be indiviually written for your custom
  * Excel format.
  */
@@ -30,7 +30,7 @@ public class ExcelToTestDomain {
     }
 
     /**
-     * Creates the domain model of the test cases
+     * Creates the domain testdatamodel of the test cases
      * @return test series
      */
     public TestSeries createTestSeries() {

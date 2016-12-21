@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * Checks various constellations on the (integra-) model. In some cases warning are printed out in
+ * Checks various constellations on the (integra-) testdatamodel. In some cases warning are printed out in
  * server cases even an exception is thrown to cancel the generation.
  */
 public class ConsistencyCheck {
