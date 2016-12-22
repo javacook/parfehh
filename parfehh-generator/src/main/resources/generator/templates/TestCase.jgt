@@ -10,7 +10,6 @@ public void <<-TestCaseMethodName>>() {
     << foreachPreCondition --> PreCondition_jit : {
     testBridge.preCondition_<<PreConditionMethodName>>(<<PreConditionArgument>>);
     } >>
-
     // Test steps:
     << foreachTestStep --> TestStep_jit : {
         // - <<TestStepDescription>>:
