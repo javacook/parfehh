@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.javacook</groupId>
         <artifactId>parfehh</artifactId>
-        <version>0.4</version>
+        <version>0.5</version>
     </parent>
 
     <artifactId>parfehh-generator</artifactId>
