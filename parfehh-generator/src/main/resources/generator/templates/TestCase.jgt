@@ -8,7 +8,8 @@ public void <<-TestCaseMethodName>>() {
 
     // Preconditions:
     << foreachPreCondition --> PreCondition_jit : {
-    testBridge.preCondition_<<PreConditionMethodName>>(<<PreConditionArgument>>); } >>
+    testBridge.preCondition_<<PreConditionMethodName>>(<<PreConditionArgument>>);
+    } >>
 
     // Test steps:
     << foreachTestStep --> TestStep_jit : {
@@ -23,6 +24,9 @@ public void <<-TestCaseMethodName>>() {
     } >>
     // Postconditions:
     << foreachPostCondition --> PostCondition_jit : {
-    testBridge.postCondition_<<PostConditionMethodName>>(<<PostConditionArgument>>); } >>
+    testBridge.postCondition_<<PostConditionMethodName>>(<<PostConditionArgument>>);
+    } >>
 }
+
+
 
