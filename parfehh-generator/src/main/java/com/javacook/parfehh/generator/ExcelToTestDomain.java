@@ -6,19 +6,31 @@ import com.javacook.easyexcelaccess.ExcelCoordinateSequencer;
 import com.javacook.parfehh.domain.*;
 
 import java.util.logging.Logger;
-import java.io.IOException;
 
 /**
- * Reads the test cases (data) from an Excel file and stores them into
- * the domain testdatamodel (look also at the project integrationtest-domain).
- * This is a class that must be indiviually written for your custom
- * Excel format.
+ * Reads the test cases (data) from an Excel file and stores them into the domain testdatamodel
+ * (look also at the project integrationtest-domain). This is a class that must be indiviually
+ * written for your custom Excel format.
+ * Hint: This is a default implementation and can be replaced with a custom one by defining it
+ * in the <code>config.properties</code> using the key testCaseReader=<qualified class name>.
+ * An Example of the usage can be found in <code>ExcelToTestDomainMain</code>.
  */
 public class ExcelToTestDomain implements TestCaseReader {
 
-    final static Logger LOG = Logger.getLogger("ExcelToTestDomain");
     final ExcelCoordinateAccessor excel;
-    final TestSeries testSeries;
+    final TestSeries testSeries; // The (eventuel) result of method createTestSeries
+
+    public static final ExcelCoordinate COORD_TEST_SERIES_TITLE = new ExcelCoordinate(1,1);
+    public static final ExcelCoordinate COORD_TEST_SERIES_DESCR = new ExcelCoordinate(1,2);
+    public static final ExcelCoordinate COORD_START_TEST_CASE_TITLE = new ExcelCoordinate("F", 1);
+    public static final ExcelCoordinate COORD_START_TEST_CASE_DESCR = new ExcelCoordinate("F", 2);
+    public static final ExcelCoordinate COORD_START_TEST_CASE_PRIO = new ExcelCoordinate("F", 3);
+    public static final String COL_ALL_DESCR = "D";
+    public static final String LABEL_VORBEDINGUNGEN  = "Vorbedingungen";
+    public static final String LABEL_NACHBEDINGUNGEN = "Nachbedingungen";
+    public static final String LABEL_TESTSCHRITT_1   = "Eingabe der Funktionsparameter";
+    public static final String LABEL_TESTSCHRITT_2   = "Aufruf des Service";
+    public static final String LABEL_WIRKUNGEN       = "Wirkungen";
 
     /**
      * Constructor getting an object to access the Excel data.
@@ -34,8 +46,8 @@ public class ExcelToTestDomain implements TestCaseReader {
      * @return test series
      */
     public TestSeries createTestSeries() {
-        testSeries.title = excel.readString(new ExcelCoordinate(1, 1));
-        testSeries.description = excel.readString(new ExcelCoordinate(1, 2));
+        testSeries.title = excel.readString(COORD_TEST_SERIES_TITLE);
+        testSeries.description = excel.readString(COORD_TEST_SERIES_DESCR);
         assignTestCaseTitles();
         assignTestCaseDescriptions();
         assignTestCasePriorities();
@@ -49,7 +61,7 @@ public class ExcelToTestDomain implements TestCaseReader {
 
     void assignTestCaseTitles() {
         new ExcelCoordinateSequencer()
-                .forRow(1).fromCol("F").toColMax().horStep(2)
+                .forCoord(COORD_START_TEST_CASE_TITLE).toColMax().horStep(2)
                 .stopWhen(coord -> excel.isEmpty(coord))
                 .forEach( (coord, i) -> {
                     TestCase testCase = testSeries.testCases.getOrNew(i, TestCase::new);
@@ -61,8 +73,8 @@ public class ExcelToTestDomain implements TestCaseReader {
 
     void assignTestCaseDescriptions() {
         new ExcelCoordinateSequencer()
-                .forRow(2).fromCol("F").toColMax().horStep(2)
-                .stopWhen(coord -> excel.isEmpty(coord.setRow(1)))
+                .forCoord(COORD_START_TEST_CASE_DESCR).toColMax().horStep(2)
+                .stopWhen(coord -> excel.isEmpty(coord.setRow(COORD_START_TEST_CASE_TITLE.row())))
                 .forEach( (coord, i) -> {
                     TestCase testCase = testSeries.testCases.getOrNew(i, TestCase::new);
                     testCase.description = excel.readString(coord);
@@ -73,11 +85,11 @@ public class ExcelToTestDomain implements TestCaseReader {
 
     void assignTestCasePriorities() {
         new ExcelCoordinateSequencer()
-                .forRow(3).fromCol("F").toColMax().horStep(2)
-                .stopWhen(coord -> excel.isEmpty(coord.setRow(1)))
-                .forEach( (coord, i) -> {
+                .forCoord(COORD_START_TEST_CASE_PRIO).toColMax().horStep(2)
+                .stopWhen(coordHor -> excel.isEmpty(coordHor.setRow(COORD_START_TEST_CASE_TITLE.row())))
+                .forEach( (coordHor, i) -> {
                     TestCase testCase = testSeries.testCases.getOrNew(i, TestCase::new);
-                    String priority = excel.readString(coord);
+                    String priority = excel.readString(coordHor);
                     switch (priority) {
                         case "high":
                             testCase.priority = 2;
@@ -91,22 +103,22 @@ public class ExcelToTestDomain implements TestCaseReader {
                         default:
                             throw new IllegalArgumentException("Unexpected value for priority: " + priority);
                     }
-                    logCase("assignTestCasePriorities", coord, "testCase.priority", testCase.priority);
+                    logCase("assignTestCasePriorities", coordHor, "testCase.priority", testCase.priority);
                 });
     }// assignTestCasePriorities
 
 
     void assignPreConditions() {
         new ExcelCoordinateSequencer()
-                .forRow(excel.find("Vorbedingungen").row()+1)
-                .fromCol("F").toColMax().horStep(2)
-                .stopWhen(coordHori -> excel.isEmpty(coordHori.setRow(1)))
-                .forEach( (coordHori, i) -> {
+                .forRow(excel.find(LABEL_VORBEDINGUNGEN).row()+1)
+                .fromCol(COORD_START_TEST_CASE_TITLE.col()).toColMax().horStep(2)
+                .stopWhen(coordHor -> excel.isEmpty(coordHor.setRow(COORD_START_TEST_CASE_TITLE.row())))
+                .forEach( (coordHor, i) -> {
                     TestCase testCase = testSeries.testCases.getOrNew(i, TestCase::new);
 
                     new ExcelCoordinateSequencer()
-                            .forCol("D").fromRow(coordHori.row()).toRowMax().enter()
-                            .from(coordHori).toRowMax().width(1)
+                            .forCol(COL_ALL_DESCR).fromRow(coordHor.row()).toRowMax().enter()
+                            .from(coordHor).toRowMax().width(1)
                             .stopWhenPair( (coordDescr, coordShopping) -> excel.isEmpty(coordDescr))
                             .forEachPair((coordDescr, coordsShopping, j) -> {
                                 String xOrNot = excel.readString(coordsShopping);
@@ -128,13 +140,13 @@ public class ExcelToTestDomain implements TestCaseReader {
 
     void assignPostConditions() {
         new ExcelCoordinateSequencer()
-                .forRow(excel.find("Nachbedingungen").row()+1)
-                .fromCol("F").toColMax().horStep(2)
-                .stopWhen(coordHor -> excel.isEmpty(coordHor.setRow(1)))
+                .forRow(excel.find(LABEL_NACHBEDINGUNGEN).row()+1)
+                .fromCol(COORD_START_TEST_CASE_TITLE.col()).toColMax().horStep(2)
+                .stopWhen(coordHor -> excel.isEmpty(coordHor.setRow(COORD_START_TEST_CASE_TITLE.row())))
                 .forEach( (coordHor, i) -> {
                     TestCase testCase = testSeries.testCases.getOrNew(i, TestCase::new);
                     new ExcelCoordinateSequencer()
-                            .forCol("D").fromRow(coordHor.row()).toRowMax().enter()
+                            .forCol(COL_ALL_DESCR).fromRow(coordHor.row()).toRowMax().enter()
                             .from(coordHor).height(3).width(1)
                             .stopWhenPair( (coordDescr, coordShopping) -> excel.isEmpty(coordDescr))
                             .forEachPair((coordDescr, coordsShopping, j) -> {
@@ -156,24 +168,21 @@ public class ExcelToTestDomain implements TestCaseReader {
 
 
     void assignTestCaseActions() {
-        final String MARKER1 = "Eingabe der Funktionsparameter";
-        final String MARKER2 = "Aufruf des Service";
-
         new ExcelCoordinateSequencer()
-                .forRow(excel.find(MARKER1).row()+1)
-                .fromCol("F").toColMax().horStep(2).enter()
-                .forRow(excel.find(MARKER2).row()+1)
-                .fromCol("F").toColMax().horStep(2)
-                .stopWhenPair( (coordHor1, coordHor2) -> excel.isEmpty(coordHor1.setRow(1)))
+                .forRow(excel.find(LABEL_TESTSCHRITT_1).row()+1)
+                .fromCol(COORD_START_TEST_CASE_TITLE.col()).toColMax().horStep(2).enter()
+                .forRow(excel.find(LABEL_TESTSCHRITT_2).row()+1)
+                .fromCol(COORD_START_TEST_CASE_TITLE.col()).toColMax().horStep(2)
+                .stopWhenPair( (coordHor1, coordHor2) -> excel.isEmpty(coordHor1.setRow(COORD_START_TEST_CASE_TITLE.row())))
                 .forEachPair( (coordHor1, coordHor2, i) -> {
                     TestCase testCase = testSeries.testCases.getOrNew(i, TestCase::new);
                     TestStep testStep1 = testCase.testSteps.getOrNew(0, TestStep::new);
-                    testStep1.title = MARKER1;
+                    testStep1.title = LABEL_TESTSCHRITT_1;
                     TestStep testStep2 = testCase.testSteps.getOrNew(1, TestStep::new);
-                    testStep2.title = MARKER2;
+                    testStep2.title = LABEL_TESTSCHRITT_2;
 
                     new ExcelCoordinateSequencer()
-                        .forCol("D").fromRow(coordHor1.row()).toRowMax().enter()
+                        .forCol(COL_ALL_DESCR).fromRow(coordHor1.row()).toRowMax().enter()
                         .from(coordHor1).toRowMax().width(1)
                         .stopWhenPair((coordDescr, coordsShopping) -> excel.isEmpty(coordDescr))
                         .forEachPair((coordDescr, coordsShopping) -> {
@@ -191,7 +200,7 @@ public class ExcelToTestDomain implements TestCaseReader {
                             }
                         });
                     new ExcelCoordinateSequencer()
-                            .forCol("D").fromRow(coordHor2.row()).toRowMax().enter()
+                            .forCol(COL_ALL_DESCR).fromRow(coordHor2.row()).toRowMax().enter()
                             .from(coordHor2).toRowMax().width(1)
                             .stopWhenPair((coordDescr, coordsShopping) -> excel.isEmpty(coordDescr))
                             .forEachPair((coordDescr, coordsShopping) -> {
@@ -213,16 +222,14 @@ public class ExcelToTestDomain implements TestCaseReader {
 
 
     void assignEffects() {
-        final String MARKER1 = "Wirkungen";
-
         new ExcelCoordinateSequencer()
-                .forRow(excel.find(MARKER1).row()+1)
-                .fromCol("F").toColMax().horStep(2)
-                .stopWhen(coordHor -> excel.isEmpty(coordHor.setRow(1)))
+                .forRow(excel.find(LABEL_WIRKUNGEN).row()+1)
+                .fromCol(COORD_START_TEST_CASE_TITLE.col()).toColMax().horStep(2)
+                .stopWhen(coordHor -> excel.isEmpty(coordHor.setRow(COORD_START_TEST_CASE_TITLE.row())))
                 .forEach( (coordHor, i) -> {
                     TestCase testCase = testSeries.testCases.getOrNew(i, TestCase::new);
                     new ExcelCoordinateSequencer()
-                            .forCol("D").fromRow(coordHor.row()).toRowMax().enter()
+                            .forCol(COL_ALL_DESCR).fromRow(coordHor.row()).toRowMax().enter()
                             .from(coordHor).toRowMax().width(1)
                             .stopWhenPair( (coordDescr, coordsShopping) -> excel.isEmpty(coordDescr))
                             .forEachPair( (coordDescr, coordsShopping, j) -> {
@@ -243,6 +250,10 @@ public class ExcelToTestDomain implements TestCaseReader {
     }// assignEffects
 
 
+    /*********************************************************\
+     * Logging                                               *
+    \*********************************************************/
+
     private static void logCase(String method, ExcelCoordinate coord, String mess, Object nullOrNot) {
         final Logger LOG = Logger.getLogger("ParfehhGenerator." + method);
         if (nullOrNot == null) {
@@ -253,22 +264,9 @@ public class ExcelToTestDomain implements TestCaseReader {
         }
     }
 
-
     private static void logFine(String method, ExcelCoordinate coord, String mess, Object nullOrNot) {
         final Logger LOG = Logger.getLogger("ParfehhGenerator." + method);
         LOG.fine(coord + ": " + mess + " = " + nullOrNot);
-    }
-
-
-    /*********************************************************\
-     * main                                                  *
-    \*********************************************************/
-
-    public static void main(String[] args) throws IOException {
-        ExcelCoordinateAccessor excelAccessor = new ExcelCoordinateAccessor("/MyTests.xls");
-        ExcelToTestDomain factory = new ExcelToTestDomain(excelAccessor);
-        factory.createTestSeries();
-        System.out.println(factory.testSeries);
     }
 
 }
