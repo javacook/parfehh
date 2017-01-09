@@ -148,7 +148,8 @@ public class ParfehhGeneratorMain {
             return Arrays.asList(str.split(" *, *"))
                     .stream()
                     .map(Integer::parseInt)
-                    .filter(t -> t > 0)
+                    .filter(t -> t >= 0)
+                    // .filter(t -> t > 0)
                     // .map(t -> t - 1) // Excel sheets should start with 1
                     .collect(Collectors.toList());
         } catch (Exception e) {
