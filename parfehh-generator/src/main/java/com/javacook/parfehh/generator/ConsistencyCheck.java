@@ -80,6 +80,8 @@ public class ConsistencyCheck {
     public static void checkWhetherParametersOfOneIdAreSetAndAlsoNotSet(
             Collection<? extends ParamDescrBase> allOf, String kindOfCollection)
     {
+        // Note that distinct is necessary because many elements (of many test cases) belong to the
+        // same id.
         final Stream<String> ids = allOf.stream().map(t -> t.id).distinct();
         ids.forEach(id -> {
             boolean parametersEitherAssignedAndAlsoNotAssigned = allOf.stream()
@@ -92,6 +94,7 @@ public class ConsistencyCheck {
             }
         });
     }
+
 
     public static void checkTestCase(TestCase testCase) {
         if (testCase.title == null) error("The title of " + testCase + " is null.");
