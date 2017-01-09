@@ -7,7 +7,7 @@
     <groupId>com.javacook</groupId>
     <artifactId>parfehh</artifactId>
     <packaging>pom</packaging>
-    <version>0.6</version>
+    <version>0.7</version>
 
     <scm>
         <connection>scm:git:git://github.com/javacook/parfehh.git</connection>
