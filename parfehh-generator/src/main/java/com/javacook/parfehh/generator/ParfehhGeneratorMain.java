@@ -21,6 +21,7 @@ public class ParfehhGeneratorMain {
     public static final String PROPERTY_KEY_INPUT_FILE_NAME   = "excel.file";
     public static final String PROPERTY_KEY_INPUT_FILE_SHEETS = "excel.sheets";
     public static final String PROPERTY_KEY_TEST_CASE_READER  = "testCaseReader";
+    public static final String PROPERTY_KEY_OUTPUT_DIRECTORY  = "jiowa.codegen.generator.output.directory";
 
     /**
      *
@@ -31,7 +32,14 @@ public class ParfehhGeneratorMain {
         try {
             JavaCookProperties configProperties = LoadConfigUtil.process(arguments);
             LoggingUtils.configureLogging(configProperties);
-            generate(configProperties);
+            if (configProperties.containsKey(PROPERTY_KEY_OUTPUT_DIRECTORY)) {
+                generate(configProperties);
+            }
+            else {
+                throw new IllegalArgumentException("The property '" +PROPERTY_KEY_OUTPUT_DIRECTORY +
+                        "' must be specified, either in the file 'config.properties' or as program argument " +
+                        "in the form: '" + PROPERTY_KEY_OUTPUT_DIRECTORY + "=...'");
+            }
         }
         catch (IllegalArgumentException | IOException e) {
             LOG.warning(e.getMessage());
@@ -48,7 +56,7 @@ public class ParfehhGeneratorMain {
      * @throws IOException if there are problems reading the excel file
      */
     private static void generate(JavaCookProperties finalProperties) throws IOException {
-        LOG.info("======================== Start of INtegraion TEst GeneRAtion ============================");
+        LOG.info("======================== Start of Test Classes Generation ============================");
         final String excelFileName = getExcelFileName(finalProperties);
         final String excelSheets = getSheetNumbers(finalProperties);
 
@@ -56,7 +64,7 @@ public class ParfehhGeneratorMain {
         for (int excelSheet : parseIntList(excelSheets)) {
             generateForOneSheet(finalProperties, excelFileName, excelSheet);
         } // for
-        LOG.info("======================== End of INtegraion TEst GeneRAtion ===============================");
+        LOG.info("======================== End of Test Classes Generation ===============================");
     }
 
     /**
@@ -148,7 +156,8 @@ public class ParfehhGeneratorMain {
             return Arrays.asList(str.split(" *, *"))
                     .stream()
                     .map(Integer::parseInt)
-                    .filter(t -> t > 0)
+                    .filter(t -> t >= 0)
+                    // .filter(t -> t > 0)
                     // .map(t -> t - 1) // Excel sheets should start with 1
                     .collect(Collectors.toList());
         } catch (Exception e) {
