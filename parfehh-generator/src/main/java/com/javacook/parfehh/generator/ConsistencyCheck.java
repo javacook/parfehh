@@ -116,7 +116,7 @@ public class ConsistencyCheck {
                     .distinct().count() > 1;
 
             if (parametersTypesAreDifferent) {
-                error("Some parameters of " + kindOfCollection + " (id = " + id + ") are set, some are not.");
+                error("Some parameters of " + kindOfCollection + " (id = " + id + ") are not of the same (cell) type.");
             }
         });
     }
