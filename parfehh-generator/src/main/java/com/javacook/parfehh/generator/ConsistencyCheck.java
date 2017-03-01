@@ -52,9 +52,16 @@ public class ConsistencyCheck {
         final Collection<PostCondition> allPostConditions = testSeries.getAllPostConditions(true);
 
         checkWhetherParametersOfOneIdAreSetAndAlsoNotSet(allPreConditions, "pre condition");
+        checkWhetherParametersOfOneIdAreAllOfTheSameType(allPreConditions, "pre condition");
+
         checkWhetherParametersOfOneIdAreSetAndAlsoNotSet(allActions, "action");
+        checkWhetherParametersOfOneIdAreAllOfTheSameType(allActions, "action");
+
         checkWhetherParametersOfOneIdAreSetAndAlsoNotSet(allEffects, "effect");
+        checkWhetherParametersOfOneIdAreAllOfTheSameType(allEffects, "effect");
+
         checkWhetherParametersOfOneIdAreSetAndAlsoNotSet(allPostConditions, "post condition");
+        checkWhetherParametersOfOneIdAreAllOfTheSameType(allPostConditions, "post condition");
 
         CollectionUtils.pairwiseDifferent(testSeries.getAllPreConditions(false), tc -> tc.description,
                 description -> error("The pre condition description '" + description + "' is used twice."));
@@ -94,6 +101,26 @@ public class ConsistencyCheck {
             }
         });
     }
+
+
+    public static void checkWhetherParametersOfOneIdAreAllOfTheSameType(
+            Collection<? extends ParamDescrBase> allOf, String kindOfCollection)
+    {
+        // Note that distinct is necessary because many elements (of many test cases) belong to the
+        // same id.
+        final Stream<String> ids = allOf.stream().map(t -> t.id).distinct();
+        ids.forEach(id -> {
+            boolean parametersTypesAreDifferent = allOf.stream()
+                    .filter(pd -> id.equals(pd.id))
+                    .map(pd -> (pd.parameter == null)? "null" : pd.parameter.getClass() )
+                    .distinct().count() > 1;
+
+            if (parametersTypesAreDifferent) {
+                error("Some parameters of " + kindOfCollection + " (id = " + id + ") are set, some are not.");
+            }
+        });
+    }
+
 
 
     public static void checkTestCase(TestCase testCase) {
