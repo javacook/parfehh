@@ -1,16 +1,18 @@
 package com.javacook.parfehh.generator;
 
-import com.javacook.parfehh.util.string.Namer;
-import com.javacook.parfehh.domain.*;
-import com.javacook.parfehh.domain.util.DynamicList;
-import com.jiowa.codegen.config.JiowaCodeGenConfig;
 import com.javacook.integra.template.bean.*;
 import com.javacook.integra.template.bean.TestCase_jgt.foreachEffect.Effect_jit;
 import com.javacook.integra.template.bean.TestCase_jgt.foreachTestStep.TestStep_jit;
 import com.javacook.integra.template.bean.TestCase_jgt.foreachTestStep.TestStep_jit.foreachAction.Action_jit;
+import com.javacook.parfehh.domain.*;
+import com.javacook.parfehh.domain.util.DynamicList;
+import com.javacook.parfehh.util.string.Namer;
+import com.jiowa.codegen.config.JiowaCodeGenConfig;
 import com.jiowa.codegen.generator.AbstractGenerator;
 
 import java.util.logging.Logger;
+
+import static com.javacook.parfehh.util.string.StringUtils.escapeJavaDoc;
 
 public class ParfehhGenerator extends AbstractGenerator {
 
@@ -118,7 +120,7 @@ public class ParfehhGenerator extends AbstractGenerator {
         TestBridge_jgt testBridge_jgt = new TestBridge_jgt()
                 .setPackageName(packageName)
                 .setTestBridgeTitle(testBridgeName)
-                .setTestBridgeComment(testSeries.description)
+                .setTestBridgeComment(escapeJavaDoc(testSeries.description))
                 .setTestSeriesTitle(testClassName);
 
         if (testBridgeBaseClass == null || testSeriesBaseClass.isEmpty()) {
@@ -132,7 +134,7 @@ public class ParfehhGenerator extends AbstractGenerator {
         for (PreCondition preCondition : testSeries.getAllPreConditions(false)) {
             PreCondition_jgt preCondition_jgt = new PreCondition_jgt()
                     .setPreConditionMethodName(preCondition.uniqueName)
-                    .setPreConditionMethodComment(preCondition.description)
+                    .setPreConditionMethodComment(escapeJavaDoc(preCondition.description))
                     .setPreConditionArgument(generateArgPair(preCondition.parameter))
                     .setPreConditionJavaDoc(preCondition.parameter == null?
                             "" : "@param parameter additional configuration parameter")
@@ -143,7 +145,7 @@ public class ParfehhGenerator extends AbstractGenerator {
         for (Action action : testSeries.getAllActions(false)) {
             Action_jgt action_jgt = new Action_jgt()
                     .setActionMethodName(action.uniqueName)
-                    .setActionMethodComment(action.description)
+                    .setActionMethodComment(escapeJavaDoc(action.description))
                     .setActionArgument(generateArgPair(action.parameter))
                     .setActionArgumentJavaDoc(action.parameter == null?
                             "" : "@param parameter input value")
@@ -154,7 +156,7 @@ public class ParfehhGenerator extends AbstractGenerator {
         for (Effect effect : testSeries.getAllEffects(false)) {
             Effect_jgt action_jgt = new Effect_jgt()
                     .setEffectMethodName(effect.uniqueName)
-                    .setEffectMethodComment(effect.description)
+                    .setEffectMethodComment(escapeJavaDoc(effect.description))
                     .setEffectArgument(generateArgPair(effect.parameter))
                     .setEffectArgumentJavaDoc(effect.parameter == null?
                             "" : "@param parameter expected result")
@@ -168,7 +170,7 @@ public class ParfehhGenerator extends AbstractGenerator {
                     .setPostConditionArgument(generateArgPair(postCondition.parameter))
                     .setPostConditionJavaDoc(postCondition.parameter == null?
                             "" : "@param parameter additional configuration parameter")
-                    .setPostConditionMethodComment(postCondition.description)
+                    .setPostConditionMethodComment(escapeJavaDoc(postCondition.description))
                     .setPostConditionProtectedRegion(postCondition.id);
             testBridge_jgt.foreachPostCondition.append(postCondition_jgt);
         }
@@ -179,7 +181,7 @@ public class ParfehhGenerator extends AbstractGenerator {
         TestSeries_jgt testSeries_jgt = new TestSeries_jgt()
                 .setPackageName(packageName)
                 .setTestSeriesTitle(testClassName)
-                .setTestSeriesComment(testSeries.description);
+                .setTestSeriesComment(escapeJavaDoc(testSeries.description));
 
         if (testSeriesBaseClass == null || testSeriesBaseClass.isEmpty()) {
             testSeries_jgt.setTestSeriesExtends("");
@@ -192,7 +194,7 @@ public class ParfehhGenerator extends AbstractGenerator {
 
             TestCase_jgt testCase_jgt = new TestCase_jgt()
                     .setTestCaseMethodName(testCase.uniqueName)
-                    .setTestCaseMethodComment(testCase.description)
+                    .setTestCaseMethodComment(escapeJavaDoc(testCase.description))
                     .setTestBridgeTitle(testBridgeName);
 
             for (PreCondition preCondition : testCase.preConditions) {
