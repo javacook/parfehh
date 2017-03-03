@@ -14,4 +14,23 @@ public class StringUtils {
         return matcher.find();
     }
 
+    public static String escapeJavaDoc(String str) {
+        if (str == null) {
+            return null;
+        }
+        String result = "";
+        for (char ch : str.toCharArray()) {
+            switch (ch) {
+                case '&': result += "&amp;";
+                    break;
+                case '@': result += "&#064;";
+                    break;
+                case '*': result += "&#042;";
+                    break;
+                default: result += ch;
+            }
+        }
+        return result;
+    }
+
 }
