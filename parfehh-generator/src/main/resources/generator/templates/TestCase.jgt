@@ -1,7 +1,7 @@
 /**
  * <<TestCaseMethodComment>>
  */
-@Test
+<<Disable>>@Test
 public void <<-TestCaseMethodName>>() {
 
     <<TestBridgeTitle>> testBridge = new <<TestBridgeTitle>>(this);

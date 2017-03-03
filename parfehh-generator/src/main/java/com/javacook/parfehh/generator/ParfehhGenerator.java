@@ -195,7 +195,8 @@ public class ParfehhGenerator extends AbstractGenerator {
             TestCase_jgt testCase_jgt = new TestCase_jgt()
                     .setTestCaseMethodName(testCase.uniqueName)
                     .setTestCaseMethodComment(escapeJavaDoc(testCase.description))
-                    .setTestBridgeTitle(testBridgeName);
+                    .setTestBridgeTitle(testBridgeName)
+                    .setDisable(testCase.uniqueName.startsWith("_")? "// " : "");
 
             for (PreCondition preCondition : testCase.preConditions) {
                 testCase_jgt.foreachPreCondition.append(
