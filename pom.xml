@@ -7,7 +7,7 @@
     <groupId>com.javacook</groupId>
     <artifactId>parfehh</artifactId>
     <packaging>pom</packaging>
-    <version>0.10-SNAPSHOT</version>
+    <version>0.10</version>
 
     <scm>
         <connection>scm:git:git://github.com/javacook/parfehh.git</connection>
@@ -32,6 +32,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <easy-excel-access-version>0.8</easy-excel-access-version>
     </properties>
 
     <build>
@@ -52,7 +53,7 @@
             <dependency>
                 <groupId>com.javacook</groupId>
                 <artifactId>easy-excel-access</artifactId>
-                <version>0.8-SNAPSHOT</version>
+                <version>${easy-excel-access-version}</version>
             </dependency>
 
             <dependency>
